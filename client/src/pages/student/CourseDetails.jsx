@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import Loading from "../../components/student/Loading";
 import { assets } from "../../assets/assets";
@@ -8,13 +7,15 @@ import Footer from "../../components/student/Footer";
 import YouTube from "react-youtube";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useParams, useNavigate } from "react-router-dom";
 
 const CourseDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [courseData, setCourseData] = useState(null);
   const [openSections, setOpenSections] = useState({});
-  const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState(false);
+  const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState(true);
   const [playerData, setPlayerData] = useState(null);
 
   const {
@@ -47,31 +48,34 @@ const CourseDetails = () => {
   };
 
   const enrollCourse = async () => {
-    try {
-      if (!userData) {
-        return toast.warn("Login to Enroll");
-      }
-      if (isAlreadyEnrolled) {
-        return toast.warn("Already Enrolled");
-      }
+    //navigate to my enrollments page
+    navigate("/my-enrollments");
+    
+    // try {
+    //   if (!userData) {
+    //     return toast.warn("Login to Enroll");
+    //   }
+    //   if (isAlreadyEnrolled) {
+    //     return toast.warn("Already Enrolled");
+    //   }
 
-      const token = await getToken();
+    //   const token = await getToken();
 
-      const { data } = await axios.post(
-        backendUrl + "/api/user/purchase",
-        { courseId: courseData._id },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+    //   const { data } = await axios.post(
+    //     backendUrl + "/api/user/purchase",
+    //     { courseId: courseData._id },
+    //     { headers: { Authorization: `Bearer ${token}` } }
+    //   );
 
-      if (data.success) {
-        const { session_url } = data;
-        window.location.replace(session_url);
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
+    //   if (data.success) {
+    //     const { session_url } = data;
+    //     window.location.replace(session_url);
+    //   } else {
+    //     toast.error(data.message);
+    //   }
+    // } catch (error) {
+    //   toast.error(error.message);
+    // }
   };
 
   useEffect(() => {
@@ -298,11 +302,18 @@ const CourseDetails = () => {
             </div>
 
             <button
-              onClick={enrollCourse}
-              className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium"
-            >
-              {isAlreadyEnrolled ? "Already Enrolled" : "Enroll Now"}
-            </button>
+  onClick={enrollCourse}
+  className="md:mt-6 mt-4 px-4 py-2 rounded-md bg-blue-600 text-white font-semibold text-sm md:text-base
+             shadow-md hover:bg-blue-700 hover:shadow-lg transition duration-300 ease-in-out
+             focus:outline-none focus:ring-2 focus:ring-blue-400 mx-auto block"
+>
+  {isAlreadyEnrolled ? "Already Enrolled" : "Enroll Now"}
+</button>
+
+
+
+
+
 
             <div className="pt-6">
               <p className="md:text-xl text-lg font-medium text-gray-800">
