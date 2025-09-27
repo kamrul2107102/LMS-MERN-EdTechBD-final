@@ -1,6 +1,8 @@
 import React from "react";
 import { Star } from "lucide-react";
+import { dummyCourses } from "../../assets/assets"; // make sure your dummyCourses is exported
 
+// Existing deals
 const deals = [
   {
     id: 1,
@@ -84,6 +86,41 @@ const deals = [
   },
 ];
 
+// Map dummyCourses to deal format with automatic tags
+const courseDeals = dummyCourses.map((course, index) => {
+  const oldPrice = (course.coursePrice / (1 - course.discount / 100)).toFixed(2);
+
+  // Calculate average rating
+  const avgRating =
+    course.courseRatings.length > 0
+      ? course.courseRatings.reduce((acc, r) => acc + r.rating, 0) / course.courseRatings.length
+      : 4.5; // default rating
+
+  // Determine tag
+  let tag = "🔥 Trending";
+  const createdDate = new Date(course.createdAt);
+  const now = new Date();
+  const daysDiff = (now - createdDate) / (1000 * 60 * 60 * 24);
+
+  if (course.discount >= 25) tag = "🔥 Hot Deal";
+  else if (avgRating >= 4.7 && course.enrolledStudents.length >= 100) tag = "⭐ Bestseller";
+  else if (daysDiff <= 30) tag = "✨ New";
+
+  return {
+    id: course._id || `course-${index}`,
+    title: course.courseTitle,
+    price: `$${course.coursePrice}`,
+    oldPrice: `$${oldPrice}`,
+    rating: avgRating.toFixed(1),
+    students: course.enrolledStudents.length + " students",
+    img: course.courseThumbnail,
+    tag,
+  };
+});
+
+// Merge previous deals with dummy courses
+const allDeals = [...deals, ...courseDeals];
+
 const Deals = () => {
   return (
     <div className="max-w-7xl mx-auto px-6 py-16">
@@ -99,17 +136,17 @@ const Deals = () => {
 
       {/* Deals Grid */}
       <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {deals.map((deal) => (
+        {allDeals.map((deal) => (
           <div
             key={deal.id}
-            className="bg-white border rounded-2xl shadow-sm hover:shadow-xl transition overflow-hidden group"
+            className="bg-white border rounded-2xl shadow-sm hover:shadow-xl transition overflow-hidden group flex flex-col"
           >
             {/* Image with Tag */}
-            <div className="relative">
+            <div className="relative h-48 flex-shrink-0">
               <img
                 src={deal.img}
                 alt={deal.title}
-                className="w-full h-48 object-cover group-hover:scale-105 transition duration-300"
+                className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
               />
               <span className="absolute top-3 left-3 bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
                 {deal.tag}
@@ -117,26 +154,22 @@ const Deals = () => {
             </div>
 
             {/* Content */}
-            <div className="p-5">
-              <h2 className="text-lg font-bold text-gray-800 group-hover:text-indigo-600 transition">
+            <div className="p-5 flex flex-col flex-1">
+              <h2 className="text-lg font-bold text-gray-800 group-hover:text-indigo-600 transition mb-2">
                 {deal.title}
               </h2>
 
               {/* Ratings & Students */}
-              <div className="flex items-center gap-2 mt-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
                 <Star className="text-yellow-500 w-4 h-4 fill-yellow-500" />
                 <span>{deal.rating}</span>
-                <span>({deal.students} students)</span>
+                <span>({deal.students})</span>
               </div>
 
               {/* Price */}
-              <div className="flex items-center gap-3 mt-3">
-                <span className="text-indigo-600 font-bold text-lg">
-                  {deal.price}
-                </span>
-                <span className="line-through text-gray-400">
-                  {deal.oldPrice}
-                </span>
+              <div className="flex items-center gap-3 mt-auto">
+                <span className="text-indigo-600 font-bold text-lg">{deal.price}</span>
+                <span className="line-through text-gray-400">{deal.oldPrice}</span>
               </div>
 
               {/* CTA Button */}
