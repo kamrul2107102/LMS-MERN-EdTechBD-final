@@ -92,16 +92,11 @@ const CoursesList = () => {
 
   // ✅ Function to calculate average rating
   const calculateAverageRating = (course) => {
-    if (!course.courseRatings || course.courseRatings.length === 0) {
-      return 0; // Return 0 if no ratings
-    }
-    
+    if (!course.courseRatings || course.courseRatings.length === 0) return 0;
     const totalRating = course.courseRatings.reduce((sum, rating) => {
-      // Assuming rating is an object with a 'rating' property, or directly a number
-      const ratingValue = typeof rating === 'object' ? rating.rating : rating;
+      const ratingValue = typeof rating === "object" ? rating.rating : rating;
       return sum + ratingValue;
     }, 0);
-    
     return totalRating / course.courseRatings.length;
   };
 
@@ -110,16 +105,13 @@ const CoursesList = () => {
 
     let tempCourses = [...allCourses];
 
-    // ✅ If course.category doesn't exist, assign random static category
     tempCourses = tempCourses.map((c, i) => ({
       ...c,
       category: c.category || categories[i % categories.length].name,
-      // Add average rating to each course for sorting
       averageRating: calculateAverageRating(c),
-      totalRatings: c.courseRatings ? c.courseRatings.length : 0
+      totalRatings: c.courseRatings ? c.courseRatings.length : 0,
     }));
 
-    // ✅ Search Filter
     if (input) {
       const searchText = input.toLowerCase();
       tempCourses = tempCourses.filter((item) =>
@@ -127,14 +119,12 @@ const CoursesList = () => {
       );
     }
 
-    // ✅ Category Filter
     if (selectedCategories.length > 0) {
       tempCourses = tempCourses.filter((item) =>
         selectedCategories.includes(item.category)
       );
     }
 
-    // ✅ Sorting Logic
     switch (sortOption) {
       case "lowToHigh":
         tempCourses.sort((a, b) => a.coursePrice - b.coursePrice);
@@ -143,24 +133,18 @@ const CoursesList = () => {
         tempCourses.sort((a, b) => b.coursePrice - a.coursePrice);
         break;
       case "mostRated":
-        // Sort by average rating (highest first), then by number of ratings
         tempCourses.sort((a, b) => {
-          if (b.averageRating !== a.averageRating) {
-            return b.averageRating - a.averageRating;
-          }
+          if (b.averageRating !== a.averageRating) return b.averageRating - a.averageRating;
           return b.totalRatings - a.totalRatings;
         });
         break;
-      
       default:
-        // Default sorting (no change)
         break;
     }
 
     setFilteredCourses(tempCourses);
   }, [allCourses, input, selectedCategories, sortOption]);
 
-  // ✅ Category Checkbox Toggle
   const handleCategoryChange = (categoryName) => {
     setSelectedCategories((prev) =>
       prev.includes(categoryName)
@@ -171,34 +155,34 @@ const CoursesList = () => {
 
   return (
     <>
-      <div className="relative md:px-36 px-8 pt-20 text-left">
-        {/* Title + Search + Sorting */}
-        <div className="flex md:flex-row flex-col gap-6 items-start justify-between w-full">
+      {/* ✅ Sticky Search Bar below Navbar */}
+      <div className="w-full bg-gray-50 py-4 px-8 md:px-36 shadow-sm  top-[60px] z-40">
+        <SearchBar tall data={input} />
+      </div>
+
+      <div className="relative md:px-36 px-8 pt-8 text-left">
+        {/* Title + Sorting */}
+        <div className="flex md:flex-row flex-col gap-6 items-start justify-between w-full mt-4">
           <div>
             <h1 className="text-4xl font-semibold text-gray-800">
               Course List
             </h1>
           </div>
 
-          {/* ✅ SearchBar */}
-          <div className="flex flex-col sm:flex-row gap-4 items-center">
-            <SearchBar data={input} />
-
-            {/* ✅ Enhanced Sorting Dropdown */}
-            <select
-              value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
-              className="border px-3 py-2 rounded-lg text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="default">Sort by: Default</option>
-              <option value="lowToHigh">Price: Low to High</option>
-              <option value="highToLow">Price: High to Low</option>
-              <option value="mostRated">Highest Rated</option>
-            </select>
-          </div>
+          {/* ✅ Sorting Dropdown */}
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            className="border px-3 py-2 rounded-lg text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="default">Sort by: Default</option>
+            <option value="lowToHigh">Price: Low to High</option>
+            <option value="highToLow">Price: High to Low</option>
+            <option value="mostRated">Highest Rated</option>
+          </select>
         </div>
 
-        {/* Search Input visible হলে */}
+        {/* Search Input visible when searching */}
         {input && (
           <div className="inline-flex items-center gap-4 px-4 py-2 border mt-8 text-gray-600 rounded-lg bg-gray-50 shadow-sm">
             <p className="font-medium">{input}</p>
@@ -252,6 +236,7 @@ const CoursesList = () => {
           )}
         </div>
       </div>
+
       <Footer />
     </>
   );

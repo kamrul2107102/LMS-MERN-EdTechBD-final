@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { assets } from "../../assets/assets";
 import { useNavigate } from "react-router-dom";
 
-const SearchBar = ({ data }) => {
+const SearchBar = ({ data, compact, tall }) => {
   const navigate = useNavigate();
   const [input, setInput] = useState(data ? data : "");
 
@@ -12,17 +12,30 @@ const SearchBar = ({ data }) => {
     navigate("/course-list/" + input.trim());
   };
 
+  // Conditional classes
+  const heightClass = tall ? "h-16 md:h-16" : compact ? "h-10" : "h-14 md:h-14";
+  const textClass = compact
+    ? "text-sm"
+    : tall
+    ? "text-base md:text-lg"
+    : "text-sm md:text-base";
+  const iconSize = compact ? "w-4 h-4" : tall ? "w-6 h-6" : "w-6 h-6";
+  const buttonPadding = compact ? "px-3" : tall ? "px-5 md:px-6" : "px-6 md:px-6";
+  const widthClass = tall ? "w-[75vw] md:w-[60vw]" : "w-full";
+
   return (
     <form
       onSubmit={onSearchHandler}
-      className="max-w-xl w-full md:h-14 h-12 flex items-center bg-white border border-gray-300 rounded-full shadow-md overflow-hidden"
+      className={`flex items-center bg-white border border-gray-300 rounded-full shadow-sm overflow-hidden ${heightClass} ${widthClass}`}
     >
       {/* Search Icon */}
-      <div className="flex items-center justify-center px-4 border-r border-gray-300 h-full">
+      <div
+        className={`flex items-center justify-center px-3 border-r border-gray-300 ${heightClass}`}
+      >
         <img
           src={assets.search_icon}
           alt="search_icon"
-          className="md:w-6 w-5 h-6 md:h-6 object-contain"
+          className={`${iconSize} object-contain`}
         />
       </div>
 
@@ -32,16 +45,18 @@ const SearchBar = ({ data }) => {
         value={input}
         type="text"
         placeholder="Search Courses..."
-        className="flex-1 h-full px-4 text-gray-600 placeholder-gray-400 focus:outline-none text-sm md:text-base"
+        className={`flex-1 px-2 text-gray-600 placeholder-gray-400 focus:outline-none ${textClass} ${heightClass}`}
       />
 
-      {/* Search Button */}
-      <button
-        type="submit"
-        className="bg-blue-600 hover:bg-blue-700 transition text-white md:px-6 px-4 md:py-3 py-2 rounded-r-full font-medium text-sm md:text-base"
-      >
-        Search
-      </button>
+      {/* Conditionally render button only if not compact */}
+      {!compact && (
+        <button
+          type="submit"
+          className={`bg-blue-600 hover:bg-blue-700 transition text-white rounded-r-full font-medium ${buttonPadding} ${textClass} ${heightClass}`}
+        >
+          Search
+        </button>
+      )}
     </form>
   );
 };

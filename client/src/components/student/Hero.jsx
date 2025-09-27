@@ -68,7 +68,7 @@ const Hero = () => {
 </p>
 
 
-      <SearchBar />
+      <SearchBar tall />
     </div>
   );
 };
