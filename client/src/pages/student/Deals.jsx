@@ -173,9 +173,10 @@ const Deals = () => {
               </div>
 
               {/* CTA Button */}
-              <button className="mt-5 w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 transition">
-                Enroll Now
-              </button>
+              <button className="mt-5 w-fit mx-auto bg-gray-10 text-blue-600 py-2.5 rounded-lg font-medium hover:bg-indigo-100 transition">
+  Enroll Now
+</button>
+
             </div>
           </div>
         ))}
