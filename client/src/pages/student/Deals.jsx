@@ -90,7 +90,7 @@ const Deals = () => {
       {/* Section Title */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-extrabold text-gray-800">
-          Special Deals for You 🎉
+          Today's Special Deals for You 🎉
         </h1>
         <p className="text-gray-500 mt-3 text-lg">
           Explore our best-selling, trending, and new courses at unbeatable prices
