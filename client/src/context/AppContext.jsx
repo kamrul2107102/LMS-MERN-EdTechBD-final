@@ -104,22 +104,24 @@ export const AppContextProvider = (props) => {
   };
 
   // Fetch User Enrolled Courses
-  const fetchUserEnrolledCourses = async () => {
-    try {
-      const token = await getToken();
-      const { data } = await axios.get(
-        backendUrl + "/api/user/enrolled-courses",
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+  const fetchUserEnrolledCourses = async () => 
+    {
+      setEnrolledCourses(dummyCourses);
+    // try {
+    //   const token = await getToken();
+    //   const { data } = await axios.get(
+    //     backendUrl + "/api/user/enrolled-courses",
+    //     { headers: { Authorization: `Bearer ${token}` } }
+    //   );
 
-      if (data.success) {
-        setEnrolledCourses(data.enrolledCourses.reverse());
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
+    //   if (data.success) {
+    //     setEnrolledCourses(data.enrolledCourses.reverse());
+    //   } else {
+    //     toast.error(data.message);
+    //   }
+    // } catch (error) {
+    //   toast.error(error.message);
+    // }
   };
 
   useEffect(() => {

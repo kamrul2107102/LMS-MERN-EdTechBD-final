@@ -17,7 +17,28 @@ const MyEnrollments = () => {
     calculateNoOfLectures,
   } = useContext(AppContext);
 
-  const [progressArray, setProgressArray] = useState([]);
+  const [progressArray, setProgressArray] = useState([
+    {
+      lectureCompleted:2,totalLectures:10
+    },
+    {
+      lectureCompleted:5,totalLectures:20
+    },
+    {
+      lectureCompleted:15,totalLectures:15
+    }
+    ,
+    {
+      lectureCompleted:7,totalLectures:25
+    },
+    {
+      lectureCompleted:10,totalLectures:30
+    }
+    ,
+    {
+      lectureCompleted:3,totalLectures:12
+    }
+  ]);
 
   const getCourseProgress = async () => {
     try {
@@ -86,6 +107,8 @@ const MyEnrollments = () => {
                             progressArray[index].totalLectures
                           : 0
                       }
+                      strokeColor="#4ade80" // ✅ এখানে রঙ পরিবর্তন করো (যেমন সবুজ)
+                      trailColor="#e5e7eb" 
                       className="bg-gray-300 rounded-full"
                     />
                   </div>
@@ -99,17 +122,37 @@ const MyEnrollments = () => {
                   <span>Lectures</span>
                 </td>
                 <td className="px-4 py-3 max-sm:text-right">
-                  <button
-                    className="px-3 sm:px-5 py-1.5 sm:py-2 bg-blue-600 max-sm:text-xs text-white"
-                    onClick={() => navigate("/player/" + course._id)}
-                  >
-                    {progressArray[index] &&
-                    progressArray[index].lectureCompleted /
-                      progressArray[index].totalLectures ===
-                      1
-                      ? "Completed"
-                      : "On Going"}
-                  </button>
+                <button
+  className="
+    px-3 sm:px-5 py-1.5 sm:py-2 
+    bg-blue-700 
+    text-white 
+    rounded-2xl 
+    shadow-md 
+    hover:bg-blue-600 
+    hover:shadow-lg 
+    transition 
+    duration-300 
+    ease-in-out 
+    transform 
+    hover:-translate-y-1 
+    hover:scale-105
+    focus:outline-none 
+    focus:ring-2 
+    focus:ring-blue-400
+    max-sm:text-xs
+  "
+  onClick={() => navigate("/player/" + course._id)}
+>
+  {progressArray[index] &&
+  progressArray[index].lectureCompleted /
+    progressArray[index].totalLectures ===
+    1
+    ? "Completed"
+    : "On Going"}
+</button>
+
+                    
                 </td>
               </tr>
             ))}

@@ -76,7 +76,7 @@ const CourseDetails = () => {
 
   useEffect(() => {
     fetchCourseData();
-  }, []);
+  }, [allCourses]);
 
   useEffect(() => {
     if (userData && courseData) {
@@ -234,7 +234,7 @@ const CourseDetails = () => {
               videoId={playerData.videoId}
               opts={{
                 playerVars: {
-                  autoplay: 1,
+                  autoplay: 0,
                 },
               }}
               iframeClassName="w-full aspect-video"
@@ -309,12 +309,14 @@ const CourseDetails = () => {
                 What’s in the course?
               </p>
               <ul className="ml-4 pt-2 text-sm md:text-default list-disc text-gray-500">
-                <li>Lifetime access with free updates.</li>
+                <li>Lifetime access with free updates available</li>
+                <li>Quizzes to test your Learning.</li>
+
+                <li>Downloadable resources </li>
                 <li>Step-by-step, hands-on project guidance.</li>
-                <li>Downloadable resources and source code.</li>
-                <li>Quizzes to test your knowledge.</li>
+                
                 <li>Certificate of completion.</li>
-                <li>Quizzes to test your knowledge.</li>
+                <li>And many more....</li>
               </ul>
             </div>
           </div>

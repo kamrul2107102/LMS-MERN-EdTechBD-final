@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { assets } from "../../assets/assets";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom"; // ✅ useLocation added
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
@@ -10,6 +10,7 @@ const Navbar = () => {
   const { navigate, isEducator, backendUrl, setIsEducator, getToken } =
     useContext(AppContext);
 
+  const location = useLocation(); // ✅ Get current path
   const isCourseListPage = location.pathname.includes("/course-list");
 
   const { openSignIn } = useClerk();
@@ -54,6 +55,9 @@ const Navbar = () => {
     </div>
   );
 
+  // ✅ Helper: check active link
+  const isActive = (path) => location.pathname === path;
+
   return (
     <nav className={`w-full ${isCourseListPage ? "bg-white shadow-md" : "bg-cyan-100/70 backdrop-blur-md"} sticky top-0 z-50`}>
       <div className="max-w-7xl mx-auto px-6 md:px-14 lg:px-36 flex items-center justify-between py-4">
@@ -63,11 +67,31 @@ const Navbar = () => {
 
         {/* Desktop Links */ }
         <div className="hidden md:flex items-center gap-8 font-medium text-gray-700">
-          <Link className="hover:text-blue-600 transition" to="/">Home</Link>
-          <Link className="hover:text-blue-600 transition" to="/courses">All Courses</Link>
-          <Link className="hover:text-blue-600 transition" to="/categories">Categories</Link>
-          <Link className="hover:text-blue-600 transition" to="/deals">Deals</Link>
-          <Link className="hover:text-blue-600 transition" to="/blog">Blog</Link>
+          <Link
+            className={`${isActive("/") ? "text-blue-600 font-bold" : "hover:text-blue-600"} transition`}
+            to="/"
+          >
+            Home
+          </Link>
+          <Link
+            to={"/course-list"}
+            className={`${isActive("/course-list") ? "text-blue-600 font-bold" : "hover:text-blue-600"} transition`}
+            onClick={() => scrollTo(0, 0)}
+          >
+            All Courses
+          </Link>       
+          <Link
+            className={`${isActive("/deals") ? "text-blue-600 font-bold" : "hover:text-blue-600"} transition`}
+            to="/deals"
+          >
+            Deals
+          </Link>
+          <Link
+            className={`${isActive("/blog") ? "text-blue-600 font-bold" : "hover:text-blue-600"} transition`}
+            to="/blog"
+          >
+            Blog
+          </Link>
         </div>
 
         {/* Right Section */}
@@ -81,8 +105,8 @@ const Navbar = () => {
                 {isEducator ? "Educator Dashboard" : "Become Educator"}
               </button>
               <Link
+                className={`${isActive("/my-enrollments") ? "text-blue-600 font-bold" : "hover:text-blue-600"} transition`}
                 to="/my-enrollments"
-                className="hover:text-blue-600 transition"
               >
                 My Enrollments
               </Link>
@@ -120,17 +144,16 @@ const Navbar = () => {
       {/* Mobile Dropdown Menu */}
       {showMobileMenu && (
         <div className="md:hidden bg-white shadow-lg w-full px-6 py-4 flex flex-col gap-4">
-          <Link to="/">Home</Link>
-          <Link to="/courses">All Courses</Link>
-          <Link to="/categories">Categories</Link>
-          <Link to="/deals">Deals</Link>
-          <Link to="/blog">Blog</Link>
+          <Link className={`${isActive("/") ? "text-blue-600 font-bold" : ""}`} to="/">Home</Link>
+          <Link className={`${isActive("/course-list") ? "text-blue-600 font-bold" : ""}`} to="/courses">All Courses</Link>
+          <Link className={`${isActive("/deals") ? "text-blue-600 font-bold" : ""}`} to="/deals">Deals</Link>
+          <Link className={`${isActive("/blog") ? "text-blue-600 font-bold" : ""}`} to="/blog">Blog</Link>
           {user && (
             <>
               <button onClick={becomeEducator}>
                 {isEducator ? "Educator Dashboard" : "Become Educator"}
               </button>
-              <Link to="/my-enrollments">My Enrollments</Link>
+              <Link className={`${isActive("/my-enrollments") ? "text-blue-600 font-bold" : ""}`} to="/my-enrollments">My Enrollments</Link>
             </>
           )}
           {!user && (
