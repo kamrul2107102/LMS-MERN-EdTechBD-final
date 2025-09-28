@@ -18,7 +18,7 @@ export const AppContextProvider = (props) => {
   const { user } = useUser();
 
   const [allCourses, setAllCourses] = useState([]);
-  const [isEducator, setIsEducator] = useState(true);
+  const [isEducator, setIsEducator] = useState(false);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [userData, setUserData] = useState(null);
 
@@ -126,12 +126,15 @@ export const AppContextProvider = (props) => {
 
   useEffect(() => {
     fetchAllCourses();
+    fetchUserEnrolledCourses();
   }, []);
-
+const logToken=async()=>{
+  const token=await getToken();
+  console.log(token);
+}
   useEffect(() => {
     if (user) {
-      fetchUserData();
-      fetchUserEnrolledCourses();
+      logToken();
     }
   }, [user]);
 

@@ -15,6 +15,8 @@ const app = express();
 // Connect to the MongoDB database
 await connectDB();
 // Connect to Cloudinary
+
+
 await connectCloudinary();
 
 // Middlewares

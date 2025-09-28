@@ -42,7 +42,7 @@ export const purchaseCourse = async (req, res) => {
     const courseData = await Course.findById(courseId);
 
     if (!userData || !courseData) {
-      return res.json({ success: false, message: "Data Not Found" });
+      return res.json({ success: false, message: "userData or courseData  Data Not Found" });
     }
 
     const purchaseData = {
@@ -59,7 +59,7 @@ export const purchaseCourse = async (req, res) => {
     // Stripe Gateway Initialize
     const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-    const currency = process.env.CURRENCY.toLowerCase();
+    const currency = process.env.CURRENCY || "inr";
 
     // Creating line items for Stripe
     const line_items = [

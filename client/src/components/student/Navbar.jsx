@@ -185,32 +185,44 @@ const Navbar = () => {
 
   const isActive = (path) => location.pathname === path;
 
+  // ✅ Become Educator handler
   const becomeEducator = async () => {
+    if (!user) {
+      openSignIn();
+      return;
+    }
+
     try {
       if (isEducator) {
         navigate("/educator");
         return;
       }
-      const token = await getToken();
-      const { data } = await axios.get(
-        backendUrl + "/api/educator/update-role",
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+
+      const token = await getToken( );
+      if (!token) {
+        toast.error("User session expired. Please sign in again.");
+        return;
+      }
+
+      const { data } = await axios.get(`${backendUrl}/api/educator/update-role`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
       if (data.success) {
         setIsEducator(true);
         toast.success(data.message);
-      } else toast.error(data.message);
+        navigate("/educator"); // Automatically navigate after success
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
   const Logo = () => (
-    <div
-      className="flex items-center gap-1 cursor-pointer"
-      onClick={() => navigate("/")}
-    >
-      <div className="flex items-center justify-center  hover:scale-105 transition-transform duration-300 w-9 h-9">
+    <div className="flex items-center gap-1 cursor-pointer" onClick={() => navigate("/")}>
+      <div className="flex items-center justify-center hover:scale-105 transition-transform duration-300 w-9 h-9">
         <img src="/src/assets/logof.svg" alt="Logo" className="h-5 w-5 object-contain" />
       </div>
       <span className="text-lg font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-700 uppercase">
@@ -223,20 +235,16 @@ const Navbar = () => {
     <nav className="w-full sticky top-0 z-50 backdrop-blur-md bg-white/80 shadow-md border-b border-gray-200">
       <div className="max-w-8xl mx-auto px-2 md:px-6 flex items-center justify-between py-2">
 
-        {/* Left section: Logo + Search */}
+        {/* Left: Logo + Search */}
         <div className="flex items-center gap-3 md:gap-5">
           <Logo />
-          <div className="hidden lg:w-fit md:block w-48">
-  <SearchBar compact />
-</div>
-
-
-
+          <div className="hidden lg:block w-48">
+            <SearchBar compact />
+          </div>
         </div>
 
-        {/* Desktop Links + Right Section */}
+        {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-4">
-          {/* Navigation Links */}
           <div className="flex items-center gap-4 font-medium text-gray-700">
             {["/", "/course-list", "/deals", "/blog"].map((path, idx) => {
               const label = ["Home", "All Courses", "Deals", "Blog"][idx];
@@ -256,7 +264,6 @@ const Navbar = () => {
             })}
           </div>
 
-          {/* Right buttons */}
           <div className="flex items-center gap-3">
             {user && (
               <>
@@ -264,7 +271,7 @@ const Navbar = () => {
                   onClick={becomeEducator}
                   className="px-3 py-1.5 rounded-lg text-gray-700 font-semibold hover:bg-blue-50 transition shadow-sm text-sm"
                 >
-                  {isEducator ? " Dashboard" : "Become Educator"}
+                  {isEducator ? "Dashboard" : "Become Educator"}
                 </button>
                 <Link
                   to="/my-enrollments"
@@ -278,7 +285,7 @@ const Navbar = () => {
             )}
             {!user && (
               <button
-                onClick={() => openSignIn()}
+                onClick={openSignIn}
                 className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-1.5 rounded-full hover:scale-105 transition-transform shadow-md text-sm"
               >
                 Sign In / Sign Up
@@ -308,13 +315,18 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Menu */}
       {showMobileMenu && (
         <div className="md:hidden bg-white shadow-lg w-full px-4 py-4 flex flex-col gap-3 animate-slide-down">
-          <Link className={`${isActive("/") ? "text-blue-600 font-semibold" : ""}`} to="/">Home</Link>
-          <Link className={`${isActive("/course-list") ? "text-blue-600 font-semibold" : ""}`} to="/course-list">All Courses</Link>
-          <Link className={`${isActive("/deals") ? "text-blue-600 font-semibold" : ""}`} to="/deals">Deals</Link>
-          <Link className={`${isActive("/blog") ? "text-blue-600 font-semibold" : ""}`} to="/blog">Blog</Link>
+          {["/", "/course-list", "/deals", "/blog"].map((path, idx) => (
+            <Link
+              key={idx}
+              to={path}
+              className={`${isActive(path) ? "text-blue-600 font-semibold" : ""}`}
+            >
+              {["Home", "All Courses", "Deals", "Blog"][idx]}
+            </Link>
+          ))}
           {user && (
             <>
               <button
@@ -323,12 +335,17 @@ const Navbar = () => {
               >
                 {isEducator ? "Educator Dashboard" : "Become Educator"}
               </button>
-              <Link className={`${isActive("/my-enrollments") ? "text-blue-600 font-semibold" : ""}`} to="/my-enrollments">My Enrollments</Link>
+              <Link
+                to="/my-enrollments"
+                className={`${isActive("/my-enrollments") ? "text-blue-600 font-semibold" : ""}`}
+              >
+                My Enrollments
+              </Link>
             </>
           )}
           {!user && (
             <button
-              onClick={() => openSignIn()}
+              onClick={openSignIn}
               className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-full shadow-md font-semibold hover:scale-105 transition-transform text-sm"
             >
               Sign In / Sign Up
@@ -341,5 +358,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
 
