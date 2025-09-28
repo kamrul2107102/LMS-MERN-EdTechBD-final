@@ -100,7 +100,7 @@ export const updateUserCourseProgress = async (req, res) => {
 
     if (progressData) {
       if (progressData.lectureCompleted.includes(lectureId)) {
-        res.json({ success: true, message: "Lecture Already Completed" });
+        res.json({ success: true, message: "Lecture's Already Completed" });
       }
 
       progressData.lectureCompleted.push(lectureId);
