@@ -139,17 +139,19 @@ const AddCourse = () => {
       toast.error(error.message);
     }
   };
-
+// for text editor
   useEffect(() => {
     if (!quillRef.current && editorRef.current) {
       quillRef.current = new Quill(editorRef.current, {
         theme: "snow",
       });
     }
-  }, []);
+  }, []);//initiate quill only once
 
   return (
-    <div className="h-screen overflow-scroll flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0">
+    <div className="h-screen overflow-scroll flex flex-col items-start justify-start 
+                md:p-8 p-4 pt-8
+                bg-gradient-to-b from-blue-50 to-blue-100">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 max-w-md w-full text-gray-500"
@@ -160,7 +162,7 @@ const AddCourse = () => {
             onChange={(e) => setCourseTitle(e.target.value)}
             value={courseTitle}
             type="text"
-            placeholder="Type here"
+            placeholder="Type here Title"
             className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500"
             required
           />
@@ -171,16 +173,7 @@ const AddCourse = () => {
         </div>
 
         <div className="flex items-center justify-between flex-wrap">
-          <div className="flex flex-col gap-1">
-            <p>Course Price</p>
-            <input
-              onChange={(e) => setCoursePrice(e.target.value)}
-              value={coursePrice}
-              type="number"
-              placeholder="0"
-              className="outline-none md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
-            />
-          </div>
+          
 
           <div className="flex md:flex-row flex-col items-center gap-3">
             <p>Course Thumbnail</p>
@@ -191,7 +184,7 @@ const AddCourse = () => {
               <img
                 src={assets.file_upload_icon}
                 alt="file_upload_icon"
-                className="p-3 bg-blue-500 rounded"
+                className="p-3 bg-blue-800 rounded-lg"
               />
               <input
                 type="file"
@@ -206,6 +199,16 @@ const AddCourse = () => {
                 alt=""
               />
             </label>
+          </div>
+          <div className="flex flex-col gap-1">
+            <p>Course Price</p>
+            <input
+              onChange={(e) => setCoursePrice(e.target.value)}
+              value={coursePrice}
+              type="number"
+              placeholder="0"
+              className="outline-none md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
+            />
           </div>
         </div>
 
@@ -286,7 +289,7 @@ const AddCourse = () => {
                     </div>
                   ))}
                   <div
-                    className="inline-flex bg-gray-100 p-2 rounded cursor-pointer mt-2"
+                    className="inline-flex bg-gray-100 p-2 rounded-lg cursor-pointer mt-2"
                     onClick={() => handleLecture("add", chapter.chapterId)}
                   >
                     + Add Lecture
@@ -296,7 +299,7 @@ const AddCourse = () => {
             </div>
           ))}
           <div
-            className="flex justify-center items-center bg-blue-100 p-2 rounded-lg cursor-pointer"
+            className="flex justify-center items-center w-full text-white bg-black p-2 rounded-lg cursor-pointer"
             onClick={() => handleChapter("add")}
           >
             + Add Chapter
@@ -372,7 +375,7 @@ const AddCourse = () => {
                   className="w-full bg-blue-400 text-white px-4 py-2 rounded"
                   onClick={addLecture}
                 >
-                  Add
+                  Add 
                 </button>
 
                 <img
@@ -386,11 +389,14 @@ const AddCourse = () => {
           )}
         </div>
         <button
-          type="submit"
-          className="bg-black text-white w-max py-2.5 px-8 rounded my-4"
-        >
-          ADD
-        </button>
+  type="submit"
+  className="bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold text-base py-2 px-4 rounded-lg my-10 shadow-md hover:from-blue-700 hover:to-blue-600 transition-all duration-300 w-fit"
+>
+  Add Course
+</button>
+
+
+
       </form>
     </div>
   );
