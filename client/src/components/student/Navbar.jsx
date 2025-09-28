@@ -210,8 +210,8 @@ const Navbar = () => {
       className="flex items-center gap-1 cursor-pointer"
       onClick={() => navigate("/")}
     >
-      <div className="flex items-center justify-center rounded-full bg-white shadow-md border-2 border-blue-400 hover:scale-105 transition-transform duration-300 w-9 h-9">
-        <img src="/src/assets/e.svg" alt="Logo" className="h-5 w-5 object-contain" />
+      <div className="flex items-center justify-center  hover:scale-105 transition-transform duration-300 w-9 h-9">
+        <img src="/src/assets/logof.svg" alt="Logo" className="h-5 w-5 object-contain" />
       </div>
       <span className="text-lg font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-700 uppercase">
         EdTechBd
@@ -221,7 +221,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full sticky top-0 z-50 backdrop-blur-md bg-white/80 shadow-md border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-3 md:px-6 flex items-center justify-between py-1.5">
+      <div className="max-w-8xl mx-auto px-2 md:px-6 flex items-center justify-between py-2">
 
         {/* Left section: Logo + Search */}
         <div className="flex items-center gap-3 md:gap-5">
@@ -262,7 +262,7 @@ const Navbar = () => {
               <>
                 <button
                   onClick={becomeEducator}
-                  className="px-3 py-1.5 rounded-lg text-blue-600 font-semibold hover:bg-blue-50 transition shadow-sm text-sm"
+                  className="px-3 py-1.5 rounded-lg text-gray-700 font-semibold hover:bg-blue-50 transition shadow-sm text-sm"
                 >
                   {isEducator ? " Dashboard" : "Become Educator"}
                 </button>

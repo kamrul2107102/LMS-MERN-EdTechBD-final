@@ -19,9 +19,9 @@ const SearchBar = ({ data, compact, tall }) => {
     : tall
     ? "text-base md:text-lg"
     : "text-sm md:text-base";
-  const iconSize = compact ? "w-4 h-4" : tall ? "w-6 h-6" : "w-6 h-6";
-  const buttonPadding = compact ? "px-3" : tall ? "px-5 md:px-6" : "px-6 md:px-6";
-  const widthClass = tall ? "w-[75vw] md:w-[60vw]" : "w-full";
+  const iconSize = compact ? "w-4 h-5" : tall ? "w-6 h-6" : "w-6 h-6";
+  const buttonPadding = compact ? "px-3" : tall ? "px-7 md:px-6" : "px-6 md:px-6";
+  const widthClass = tall ? "w-[75vw] md:w-[60vw]" : compact ? "w-80 md:w-96" : "w-full";
 
   return (
     <form
