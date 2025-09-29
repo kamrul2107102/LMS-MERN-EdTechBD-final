@@ -17,28 +17,7 @@ const MyEnrollments = () => {
     calculateNoOfLectures,
   } = useContext(AppContext);
 
-  const [progressArray, setProgressArray] = useState([
-    {
-      lectureCompleted:2,totalLectures:10
-    },
-    {
-      lectureCompleted:5,totalLectures:20
-    },
-    {
-      lectureCompleted:15,totalLectures:15
-    }
-    ,
-    {
-      lectureCompleted:7,totalLectures:25
-    },
-    {
-      lectureCompleted:10,totalLectures:30
-    }
-    ,
-    {
-      lectureCompleted:3,totalLectures:12
-    }
-  ]);
+  const [progressArray, setProgressArray] = useState([]);
 
   const getCourseProgress = async () => {
     try {
@@ -67,7 +46,7 @@ const MyEnrollments = () => {
     if (userData) {
       fetchUserEnrolledCourses();
     }
-  }, [userData]);
+  }, []);
 
   useEffect(() => {
     if (enrolledCourses.length > 0) {
@@ -78,8 +57,21 @@ const MyEnrollments = () => {
   return (
     <>
       <div className="md:px-36 px-8 pt-10">
-        <h1 className="text-2xl font-semibold">My Enrollments page</h1>
-        <table className="md:table-auto table-fixed w-full overflow-hidden border mt-10">
+        {/* ✅ Audited Courses Button */}
+        <button
+  className="mb-6 text-blue-600 underline hover:text-blue-800 hover:no-underline transition-colors duration-200 font-large"
+  onClick={() => navigate("/audit")}
+>
+  My Audited Courses
+</button>
+
+        {/* Heading */}
+        <h1 className="text-2xl font-semibold mb-2">Course Progress...</h1>
+
+        
+
+        {/* Enrollment Table */}
+        <table className="md:table-auto table-fixed w-full overflow-hidden border mt-4">
           <thead className="text-gray-900 border-b border-gray-500/20 text-sm text-left max-sm:hidden">
             <tr>
               <th className="px-4 py-3 font-semibold truncate">Course</th>
@@ -107,8 +99,6 @@ const MyEnrollments = () => {
                             progressArray[index].totalLectures
                           : 0
                       }
-                      strokeColor="#4ade80" // ✅ এখানে রঙ পরিবর্তন করো (যেমন সবুজ)
-                      trailColor="#e5e7eb" 
                       className="bg-gray-300 rounded-full"
                     />
                   </div>
@@ -122,37 +112,17 @@ const MyEnrollments = () => {
                   <span>Lectures</span>
                 </td>
                 <td className="px-4 py-3 max-sm:text-right">
-                <button
-  className="
-    px-3 sm:px-5 py-1.5 sm:py-2 
-    bg-blue-700 
-    text-white 
-    rounded-2xl 
-    shadow-md 
-    hover:bg-blue-600 
-    hover:shadow-lg 
-    transition 
-    duration-300 
-    ease-in-out 
-    transform 
-    hover:-translate-y-1 
-    hover:scale-105
-    focus:outline-none 
-    focus:ring-2 
-    focus:ring-blue-400
-    max-sm:text-xs
-  "
-  onClick={() => navigate("/player/" + course._id)}
->
-  {progressArray[index] &&
-  progressArray[index].lectureCompleted /
-    progressArray[index].totalLectures ===
-    1
-    ? "Completed"
-    : "On Going"}
-</button>
-
-                    
+                  <button
+                    className="px-3 sm:px-5 py-1.5 sm:py-2 bg-blue-600 max-sm:text-xs text-white"
+                    onClick={() => navigate("/player/" + course._id)}
+                  >
+                    {progressArray[index] &&
+                    progressArray[index].lectureCompleted /
+                      progressArray[index].totalLectures ===
+                      1
+                      ? "Completed"
+                      : "On Going"}
+                  </button>
                 </td>
               </tr>
             ))}

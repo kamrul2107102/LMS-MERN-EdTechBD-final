@@ -3,7 +3,44 @@ import Course from "../models/Course.js";
 import { Purchase } from "../models/Purchase.js";
 import User from "../models/User.js";
 import { CourseProgress } from "../models/CourseProgress.js";
+import { Audit } from "../models/Audit.js";  // ✅ এটা লাগবে
 
+
+export const auditCourse = async (req, res) => {
+  try {
+    const userId = req.auth.userId;
+    const { courseId } = req.body;
+
+    // Check if already audited
+    const existingAudit = await Audit.findOne({ userId, courseId });
+    if (existingAudit) return res.json({ success: false, message: "Already audited" });
+
+    // Create audit record
+    await Audit.create({ userId, courseId });
+
+    // Add to user's enrolledCourses array for free access
+    const user = await User.findById(userId);
+    if (!user.enrolledCourses.includes(courseId)) {
+      user.enrolledCourses.push(courseId);
+      await user.save();
+    }
+
+    res.json({ success: true, message: "Course audited successfully" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Get all audited courses of user
+export const getAuditedCourses = async (req, res) => {
+  try {
+    const userId = req.auth.userId;
+    const audits = await Audit.find({ userId }).populate("courseId");
+    res.json({ success: true, auditedCourses: audits.map(a => a.courseId) });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
 // Get User Data
 export const getUserData = async (req, res) => {
   try {
@@ -59,7 +96,7 @@ export const purchaseCourse = async (req, res) => {
     // Stripe Gateway Initialize
     const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-    const currency = process.env.CURRENCY || "inr";
+    const currency = process.env.CURRENCY || "usd";
 
     // Creating line items for Stripe
     const line_items = [

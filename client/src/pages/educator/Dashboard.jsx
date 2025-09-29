@@ -11,25 +11,25 @@
 
 //   const fetchDashboardData = async () => 
 //     {
-//serverless
-      // setDashboardData(dummyDashboardData); // Mock data
-      // useEffect(() => {
-      //   fetchDashboardData();
-      // }, []);
+// // serverless
+// //       setDashboardData(dummyDashboardData); // Mock data
+// //       useEffect(() => {
+// //         fetchDashboardData();
+// //       }, []);
 
-//     // try {
-//     //   const token = await getToken();
-//     //   const { data } = await axios.get(backendUrl + "/api/educator/dashboard", {
-//     //     headers: { Authorization: `Bearer ${token}` },
-//     //   });
-//     //   if (data.success) {
-//     //     setDashboardData(data.dashboardData);
-//     //   } else {
-//     //     toast.error(data.message);
-//     //   }
-//     // } catch (error) {
-//     //   toast.error(error.message);
-//     // }
+//     try {
+//       const token = await getToken();
+//       const { data } = await axios.get(backendUrl + "/api/educator/dashboard", {
+//         headers: { Authorization: `Bearer ${token}` },
+//       });
+//       if (data.success) {
+//         setDashboardData(data.dashboardData);
+//       } else {
+//         toast.error(data.message);
+//       }
+//     } catch (error) {
+//       toast.error(error.message);
+//     }
 //   };
 
 //   useEffect(() => {
@@ -115,28 +115,49 @@
 
 // export default Dashboard;
 
-//serverless
 
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
-import { dummyDashboardData } from "../../assets/assets";
 import Loading from "../../components/student/Loading";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 // ✅ Import React Icons
 import { FaUserGraduate, FaMoneyBillWave, FaBookOpen } from "react-icons/fa";
 
 const Dashboard = () => {
-  const { currency } = useContext(AppContext);
-  const [dashboardData, setDashboardData] = useState(null);
+   const { currency, backendUrl, getToken, isEducator } = useContext(AppContext);
+ const [dashboardData, setDashboardData] = useState(null);
 
   const fetchDashboardData = async () => {
-    setDashboardData(dummyDashboardData); // Mock data
-  };
+//     setDashboardData(dummyDashboardData); // Mock data
+//   };
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
+//   useEffect(() => {
+//     fetchDashboardData();
+//   }, []);
 
+
+try {
+  const token = await getToken();
+  const { data } = await axios.get(backendUrl + "/api/educator/dashboard", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (data.success) {
+    setDashboardData(data.dashboardData);
+  } else {
+    toast.error(data.message);
+  }
+} catch (error) {
+  toast.error(error.message);
+}
+};
+
+useEffect(() => {
+if (isEducator) {
+  fetchDashboardData();
+}
+}, [isEducator]);
   return dashboardData ? (
     <div className="min-h-screen p-6 md:p-8 flex flex-col gap-8 bg-gray-50">
       {/* ✅ Summary Cards */}

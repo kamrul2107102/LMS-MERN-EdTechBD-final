@@ -31,7 +31,7 @@ export const clerkWebhooks = async (req, res) => {
 
       case "user.updated": {
         const userData = {
-          email: data.email_address[0].email_address,
+          email: data.email_addresses[0].email_address,
           name: data.first_name + " " + data.last_name,
           imageUrl: data.image_url,
         };
@@ -70,7 +70,7 @@ export const stripeWebhooks = async (request, response) => {
     response.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  // Handle stripe webhooks
+  // Handle stripe webhooks event
   switch (event.type) {
     case "payment_intent.succeeded": {
       const paymentIntent = event.data.object;
@@ -99,7 +99,7 @@ export const stripeWebhooks = async (request, response) => {
 
       break;
     }
-    
+
     case "payment_intent.payment_failed": {
       const paymentIntent = event.data.object;
       const paymentIntentId = paymentIntent.id;

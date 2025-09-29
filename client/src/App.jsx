@@ -1,7 +1,6 @@
 import React from "react";
 import { Route, Routes, useMatch } from "react-router-dom";
 import Home from "./pages/student/Home";
-
 import CoursesList from "./pages/student/CoursesList";
 import CourseDetails from "./pages/student/CourseDetails";
 import MyEnrollments from "./pages/student/MyEnrollments";
@@ -20,6 +19,9 @@ import { ToastContainer } from "react-toastify";
 import Categories from "./pages/student/Categories";
 import Deals from "./pages/student/Deals";
 import Blog from "./pages/student/Blog";
+import AuditPage from "./pages/student/AuditPage.jsx";
+
+
 
 const App = () => {
   const isEducatorRoute = useMatch("/educator/*");
@@ -43,6 +45,9 @@ const App = () => {
         <Route path="/categories" element={<Categories />} />
         <Route path="/deals" element={<Deals />} />
         <Route path="/blog" element={<Blog />} />
+        
+        {/* ✅ Audit Page Route */}
+        <Route path="/audit" element={<AuditPage />} />
 
         {/* Educator Routes */}
         <Route path="/educator" element={<Educator />}>

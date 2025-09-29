@@ -11,32 +11,32 @@ const StudentsEnrolled = () => {
 
   const fetchEnrolledStudents = async () => 
     {
-    // try {
-    //   const token = await getToken();
-    //   const { data } = await axios.get(
-    //     backendUrl + "/api/educator/enrolled-students",
-    //     { headers: { Authorization: `Bearer ${token}` } }
-    //   );
-    //   if (data.success) {
-    //     setEnrolledStudents(data.enrolledStudents.reverse());
-    //   } else {
-    //     toast.error(data.message);
-    //   }
-    // } catch (error) {
-    //   toast.error(error.message);
-    // }
-    setEnrolledStudents(dummyStudentEnrolled);
+    try {
+      const token = await getToken();
+      const { data } = await axios.get(
+        backendUrl + "/api/educator/enrolled-students",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data.success) {
+        setEnrolledStudents(data.enrolledStudents.reverse());
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+    //setEnrolledStudents(dummyStudentEnrolled);
 
   };
-useEffect(() => {
-  fetchEnrolledStudents();
-}
-, []);
-  // useEffect(() => {
-  //   if (isEducator) {
-  //     fetchEnrolledStudents();
-  //   }
-  // }, [isEducator]);
+// useEffect(() => {
+//   fetchEnrolledStudents();
+// }
+// , []);
+  useEffect(() => {
+    if (isEducator) {
+      fetchEnrolledStudents();
+    }
+  }, [isEducator]);
 
   return enrolledStudents ? (
     <div className="min-h-screen flex flex-col items-start justify-between md:p-8 md:pb-0 pt-8 pb-0">
