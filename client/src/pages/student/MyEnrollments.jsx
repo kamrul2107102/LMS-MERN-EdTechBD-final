@@ -121,7 +121,7 @@ const MyEnrollments = () => {
                       progressArray[index].totalLectures ===
                       1
                       ? "Completed"
-                      : "On Going"}
+                      : "On Going..."}
                   </button>
                 </td>
               </tr>
