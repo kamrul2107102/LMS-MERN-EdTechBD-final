@@ -6,6 +6,10 @@ import { Link } from "react-router-dom";
 const CourseCard = ({ course }) => {
   const { currency, calculateRating } = useContext(AppContext);
 
+  // Safe rating
+  const rating = calculateRating(course) || 0;
+  const totalRatings = course.courseRatings?.length || 0;
+
   return (
     <Link
       to={"/course/" + course._id}
@@ -14,30 +18,30 @@ const CourseCard = ({ course }) => {
     >
       <img
         className="w-full"
-        src={course.courseThumbnail}
+        src={course.courseThumbnail || assets.placeholder} // fallback image
         alt="courseThumbnail"
       />
       <div className="p-3 text-left">
         <h3 className="text-base font-semibold">{course.courseTitle}</h3>
-        <p className="text-gray-500">{course.educator.name}</p>
+
+        {/* Optional chaining for educator name */}
+        <p className="text-gray-500">{course.educator?.name || course.educator || "Unknown Educator"}</p>
+
         <div className="flex items-center space-x-2">
-          <p>{calculateRating(course)}</p>
+          <p>{rating}</p>
           <div className="flex">
             {[...Array(5)].map((_, i) => (
               <img
                 key={i}
-                src={
-                  i < Math.floor(calculateRating(course))
-                    ? assets.star
-                    : assets.star_blank
-                }
+                src={i < Math.floor(rating) ? assets.star : assets.star_blank}
                 alt="star"
                 className="w-3.5 h-3.5"
               />
             ))}
           </div>
-          <p className="text-gray-500">{course.courseRatings.length}</p>
+          <p className="text-gray-500">{totalRatings}</p>
         </div>
+
         <p className="text-base font-semibold text-gray-800">
           {currency}
           {(

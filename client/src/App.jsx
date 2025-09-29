@@ -20,6 +20,7 @@ import Categories from "./pages/student/Categories";
 import Deals from "./pages/student/Deals";
 import Blog from "./pages/student/Blog";
 import AuditPage from "./pages/student/AuditPage.jsx";
+import AuditedCourses from "./pages/educator/AuditedCourses";
 
 
 
@@ -51,9 +52,10 @@ const App = () => {
 
         {/* Educator Routes */}
         <Route path="/educator" element={<Educator />}>
-          <Route path="/educator" element={<Dashboard />} />
+          <Route index element={<Dashboard />} />
           <Route path="add-course" element={<AddCourse />} />
           <Route path="my-courses" element={<MyCourses />} />
+          <Route path="audited-courses" element={<AuditedCourses />} />
           <Route path="student-enrolled" element={<StudentsEnrolled />} />
         </Route>
       </Routes>

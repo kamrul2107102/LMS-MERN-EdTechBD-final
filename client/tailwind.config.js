@@ -1,12 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  // ✅ Enable dark mode using the 'class' strategy
+  darkMode: 'class',
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}"
+  ],
   theme: {
     extend: {
       fontFamily: {
-        // ✅ Added Montserrat for professional logo and headings
+        // ✅ Custom font for headings and logo
         montserrat: ["Montserrat", "sans-serif"],
-        // You can add more custom fonts here if needed
       },
       fontSize: {
         "course-details-heading-small": ["26px", "36px"],
@@ -28,7 +32,6 @@ export default {
         "custom-card": "0px 4px 15px 2px rgba(0, 0, 0, 0.1)",
       },
       colors: {
-        // ✅ Optional: add custom brand colors for consistency
         brandBlue: "#1E40AF",
         brandIndigo: "#4F46E5",
       },
